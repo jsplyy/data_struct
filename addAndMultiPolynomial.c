@@ -19,7 +19,7 @@ listNode multiPolyList(listNode L1, listNode L2)
     p = ss;
     if(!L1->next && !L2->next)
     {
-        return NULL;
+        return ss;
     }
     while(temp1)
     {
@@ -42,6 +42,8 @@ listNode multiPolyList(listNode L1, listNode L2)
                     q->exe = e;
                     q->next = NULL;
                     ss->next = q;
+                    temp2 = temp2->next;
+                    continue;
                 }
                 while(q)
                 {
@@ -53,12 +55,14 @@ listNode multiPolyList(listNode L1, listNode L2)
                         temp3->exe = e;
                         temp3->next = q;
                         p->next = temp3;
+                        break;
                     }
                     else
                     {
                         if(q->exe == e)
                         {
                             q->coe += c;
+                            break;
                         }
                         else
                         {
@@ -70,26 +74,47 @@ listNode multiPolyList(listNode L1, listNode L2)
                                 temp3->exe = e;
                                 temp3->next = NULL;
                                 q->next = temp3;
+                                break;
                             }
                             else
                             {
+                                if(e > q->next->exe)
+                                {
                                 //insert between q and q->next.
                                 temp3 = (listNode)malloc(sizeof(polyNode));
                                 temp3->coe = c;
                                 temp3->exe = e;
                                 temp3->next = q->next;
                                 q->next = temp3;
+                                break;
+                                }
+                                else
+                                {
+                                    p = q;
+                                    q = q->next;
+                                }
                             }
                         }
                     }
-                    p = q;
-                    q = q->next;
+
 
                 }
             }
             temp2 = temp2->next;
         }
         temp1 = temp1->next;
+    }
+    //delete exe = 0
+    p =ss;
+    q = ss->next;
+    while(q)
+    {
+        if(!q->coe)
+        {
+            p->next = q->next;
+        }
+        p = q;
+        q = q->next;
     }
     return ss;
 
@@ -202,23 +227,43 @@ int main()
 //        printf("%d %d\n", p->coe, p->exe);
 //        p = p->next;
 //    }
+    multiResult = multiPolyList(s1, s2);
+    p = multiResult->next;
+    if(p)
+    {
+        while(p->next)
+        {
+            printf("%d %d ", p->coe, p->exe);
+            p = p->next;
+        }
+        printf("%d %d", p->coe, p->exe);
+    }
+    else
+    {
+        printf("0 0");
+    }
+
+
+    printf("\n");
 
     addResult = addPolyList(s1, s2);
 
     p = addResult->next;
-//    while(p)
-//    {
-//        printf("%d %d\n", p->coe, p->exe);
-//        p = p->next;
-//    }
-
-    multiResult = multiPolyList(s1, s2);
-    p = multiResult->next;
-    while(p)
+    if(p)
     {
-        printf("%d %d\n", p->coe, p->exe);
-        p = p->next;
+        while(p->next)
+        {
+            printf("%d %d ", p->coe, p->exe);
+            p = p->next;
+        }
+        printf("%d %d", p->coe, p->exe);
     }
+    else
+    {
+        printf("0 0");
+    }
+
+
 
 
 
